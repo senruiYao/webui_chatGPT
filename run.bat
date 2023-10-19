@@ -1,0 +1,1 @@
+cmd /K "env\Scripts\activate.bat && python app.py"

@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
+    <style>
+        ol {
+            height: 75vh;
+            overflow-y: scroll;
+        }
+
+        input {
+            display: block;
+            margin: auto;
+        }
+
+        textarea {
+            width: 100%;
+            height: 10vh;
+        }
+    </style>
+</head>
+
+<body>
+    <ol></ol>
+    <input type="submit">
+    <textarea></textarea>
+
+    <script>
+        function s() {
+            const ol = document.querySelector('ol')
+
+            const i = document.createElement('li')
+            ol.appendChild(i)
+            ol.appendChild(document.createElement('hr'))
+            const o = document.createElement('li')
+            ol.appendChild(o)
+            ol.appendChild(document.createElement('hr'))
+            ol.scrollTop = ol.scrollHeight
+
+            const textarea = document.querySelector('textarea')
+            const value = textarea.value
+            i.innerText = value
+            ol.scrollTop = ol.scrollHeight
+
+            const liElements = document.querySelectorAll('li')
+            const liItems = []
+            for (let index = 0; index < liElements.length; index++) {
+                const element = liElements[index]
+                const text = element.innerText
+                liItems.push(text)
+            }
+            const json = JSON.stringify(liItems)
+
+            const xhr = new XMLHttpRequest()
+            xhr.open('POST', `http://localhost/api`)
+            xhr.addEventListener('loadend', () => {
+                o.innerText = xhr.response
+                ol.scrollTop = ol.scrollHeight
+            })
+            xhr.setRequestHeader('Content-Type', 'application/json')
+            xhr.send(json)
+        }
+
+        document.querySelector('input').onclick = s
+    </script>
+</body>
+
+</html>
